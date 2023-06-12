@@ -1,15 +1,32 @@
 import { useState } from 'react'
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from 'react-router-dom'
 
-const Menu = () => {
+const Menu = ({infoProp, propAnecdotes, propCreate, propAbout}) => {
   const padding = {
     paddingRight: 5
   }
   return (
-    <div>
-      <a href='#' style={padding}>anecdotes</a>
-      <a href='#' style={padding}>create new</a>
-      <a href='#' style={padding}>about</a>
-    </div>
+    <Router>
+      <div>
+        <Link to={"/"}>Software anecdotes </Link>        
+        <Link to={"/anecdotes"}>anecdotes </Link>
+        <Link to={"create"}> create </Link>
+        <Link to={"/about"}> about</Link>
+      </div>
+      <Routes>
+        <Route path='/' element={propAnecdotes} />
+        <Route path='/anecdotes' element={propAnecdotes} />
+        <Route path='/create' element={propCreate}/>
+        <Route path='/about' element={propAbout}/>
+      </Routes>
+
+        <div>
+          {infoProp}
+        </div>
+      </Router>
   )
 }
 
@@ -124,12 +141,7 @@ const App = () => {
 
   return (
     <div>
-      <h1>Software anecdotes</h1>
-      <Menu />
-      <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
-      <Footer />
+      <Menu infoProp={<Footer/>} propAnecdotes={<AnecdoteList anecdotes={anecdotes}/>} propCreate={<CreateNew/>} propAbout={<About/>}/>
     </div>
   )
 }
