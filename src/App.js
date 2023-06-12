@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   BrowserRouter as Router,
-  Routes, Route, Link
+  Routes, Route, Link, userNavigate, useNavigate
 } from 'react-router-dom'
 
 const Menu = ({infoProp, propAnecdotes, propCreate, propAbout}) => {
@@ -64,11 +64,23 @@ const Footer = () => (
   </div>
 )
 
+const Notification = () => {
+  console.log('Notification component called!')
+
+  return (
+    <div>
+      <p>Anecdote added succesfully!☺</p>
+    </div>
+  )
+}
+
 const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  // navigating to page anecdotes
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -78,7 +90,9 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    navigate('/anecdotes')
   }
+
 
   return (
     <div>
@@ -144,7 +158,7 @@ const App = () => {
 
   return (
     <div>
-      <Menu infoProp={<Footer/>} propAnecdotes={<AnecdoteList anecdotes={anecdotes}/>} propCreate={<CreateNew/>} propAbout={<About/>}/>
+      <Menu infoProp={<Footer/>} propAnecdotes={<AnecdoteList anecdotes={anecdotes}/>} propCreate={<CreateNew addNew={addNew}/>} propAbout={<About/>}/>
     </div>
   )
 }
