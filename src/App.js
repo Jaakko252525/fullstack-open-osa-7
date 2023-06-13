@@ -89,8 +89,6 @@ const CreateNew = (props) => {
 
   const handleSubmit = (e) => {
 
-    console.log('in handleSubmits')
-    console.log('this is e', e)
     e.preventDefault()
     props.addNew({
       content: content.value,
@@ -104,7 +102,7 @@ const CreateNew = (props) => {
   }
 
   // using useField custom hook
-  const content = useField('content')
+  const content = useField()
   const author = useField('author')
   const urlVar = useField('url')
 
@@ -119,10 +117,9 @@ const CreateNew = (props) => {
             type={content.type}
             value={content.value}
             onChange={content.onChange}
-            
           />
           <button type="submit">create</button>
-          <button onClick={content.reset}>
+          <button type='reset' onClick={content.reset}>
             Reset
           </button>
         </form>

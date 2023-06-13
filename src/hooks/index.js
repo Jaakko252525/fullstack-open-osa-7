@@ -1,12 +1,13 @@
 
 
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export const useField = () => {
     const [value, setValue] = useState('')
     const [type, setType] = useState('')
-  
+
+
     const onChange = (event) => {
       console.log('this is event in onCHange:', event)
       setValue(event.target.value)
@@ -16,15 +17,14 @@ export const useField = () => {
     const reset = () => {
       setValue('')
       setType('')
-      console.log('this is value after clearing:', value)
-      console.log('this is type after:', type)
-      
+      console.log('reset called succesfully!')
     }
 
     return {
       type,
       value,
-      onChange
+      onChange,
+      reset
     }
   }
 
