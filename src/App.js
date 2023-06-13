@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import {
   BrowserRouter as Router,
-  Routes, Route, Link, userNavigate, useNavigate
+  Routes, Route, Link, useNavigate
 } from 'react-router-dom'
+import { useField } from './hooks'
 
 const Menu = ({infoProp, propAnecdotes, propCreate, propAbout}) => {
   const padding = {
@@ -64,54 +65,68 @@ const Footer = () => (
   </div>
 )
 
-const Notification = () => {
-  console.log('Notification component called!')
 
-  return (
-    <div>
-      <p>Anecdote added succesfully!☺</p>
-    </div>
-  )
-}
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const [noti, setNoti] = useState(false)
+
+
+
+
+
+  // changeNotiStateToFalse
+  const changeNotiStateToFalse = () => {
+    setNoti(false)
+  }
+  useEffect(() => {
+
+    console.log('notification!!!')
+    setTimeout(changeNotiStateToFalse, 5000)
+  })
 
   // navigating to page anecdotes
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
+
+    console.log('in handleSubmits')
+    console.log('this is e', e)
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      url: "...",
       votes: 0
     })
+    console.log('next navigating to anecdotes')
     navigate('/anecdotes')
+    setNoti(true)
   }
+
+  // using useField custom hook
+  const content = useField('content')
+  const author = useField('author')
+  const urlVar = useField('url')
+
 
 
   return (
     <div>
+      <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
-        </div>
-        <div>
-          author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
-        </div>
-        <div>
-          url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
-        </div>
-        <button>create</button>
-      </form>
+        <form onSubmit={handleSubmit}>
+          content<input 
+            type={content.type}
+            value={content.value}
+            onChange={content.onChange}
+            
+          />
+          <button type="submit">create</button>
+          <button onClick={content.reset}>
+            Reset
+          </button>
+        </form>
+      </div>
     </div>
   )
 
@@ -136,6 +151,8 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
+  
+
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
